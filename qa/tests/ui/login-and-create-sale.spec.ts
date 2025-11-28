@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 test('create sale successfully from dashboard', async ({ page }) => {
-  await page.goto('http://localhost:8080/dashboard'); 
+  await page.goto('/dashboard');
+
 
   // Verifica que el dashboard cargó
   await expect(page.getByText('Nueva Venta')).toBeVisible();
