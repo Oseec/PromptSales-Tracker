@@ -17,7 +17,7 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-      - name: Start mock API
+    - name: Start mock API
       run: |
         npm run qa:api &
         npx wait-on tcp:4000
