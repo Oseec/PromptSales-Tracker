@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('create sale successfully from dashboard', async ({ page }) => {
-  await page.goto('/dashboard');
+  await page.goto('/dashboard?VITE_TEST_MODE=true');
 
 
   // Verifica que el dashboard cargó
