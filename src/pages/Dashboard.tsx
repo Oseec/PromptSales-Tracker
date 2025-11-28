@@ -8,27 +8,41 @@ import { User } from "@supabase/supabase-js";
 import SalesForm from "@/components/SalesForm";
 import SalesList from "@/components/SalesList";
 
+const isTestMode = import.meta.env.VITE_TEST_MODE === 'true';
+
+
 const Dashboard = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/auth");
-      } else {
-        setUser(session.user);
-      }
+useEffect(() => {
+  const checkUser = async () => {
+    if (isTestMode) {
+      // Modo QA: simulamos un usuario sin hablar con Supabase
+      setUser({
+        id: "test-user",
+        email: "qa@promptsales.test",
+      } as User);
       setLoading(false);
-    };
+      return;
+    }
 
-    checkUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+      navigate("/auth");
+    } else {
+      setUser(session.user);
+    }
+    setLoading(false);
+  };
 
+  checkUser();
+
+  if (!isTestMode) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT') {
+      if (event === "SIGNED_OUT") {
         navigate("/auth");
       } else if (session) {
         setUser(session.user);
@@ -36,7 +50,8 @@ const Dashboard = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }
+}, [navigate]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();

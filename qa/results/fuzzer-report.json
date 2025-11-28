@@ -1,0 +1,142 @@
+{
+  "target": "http://localhost:4000/api/sales",
+  "generatedAt": "2025-11-28T06:05:01.668Z",
+  "summary": {
+    "totalRequests": 30,
+    "byStatus": {
+      "201": 6,
+      "400": 24
+    },
+    "errors": 0
+  },
+  "samples": [
+    {
+      "iteration": 1,
+      "payload": {
+        "customer": "texto",
+        "amount": {},
+        "paymentMethod": 1
+      },
+      "status": 201,
+      "body": {
+        "id": 4,
+        "customer": "texto",
+        "amount": {},
+        "paymentMethod": 1,
+        "createdAt": "2025-11-28T06:05:01.614Z"
+      }
+    },
+    {
+      "iteration": 2,
+      "payload": {
+        "customer": "",
+        "amount": {},
+        "paymentMethod": 999999999
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 3,
+      "payload": {
+        "customer": 1,
+        "amount": 999999999,
+        "paymentMethod": []
+      },
+      "status": 201,
+      "body": {
+        "id": 5,
+        "customer": 1,
+        "amount": 999999999,
+        "paymentMethod": [],
+        "createdAt": "2025-11-28T06:05:01.624Z"
+      }
+    },
+    {
+      "iteration": 4,
+      "payload": {
+        "customer": "",
+        "amount": "texto",
+        "paymentMethod": null
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 5,
+      "payload": {
+        "customer": 1,
+        "amount": false,
+        "paymentMethod": 25
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 6,
+      "payload": {
+        "customer": null,
+        "amount": 456.5708134455284,
+        "paymentMethod": 0
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 7,
+      "payload": {
+        "customer": 0,
+        "amount": 1,
+        "paymentMethod": true
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 8,
+      "payload": {
+        "customer": false,
+        "amount": 0,
+        "paymentMethod": 1
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 9,
+      "payload": {
+        "customer": "texto",
+        "amount": "",
+        "paymentMethod": false
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    },
+    {
+      "iteration": 10,
+      "payload": {
+        "customer": -1,
+        "amount": 999999999,
+        "paymentMethod": 0
+      },
+      "status": 400,
+      "body": {
+        "error": "Datos incompletos"
+      }
+    }
+  ]
+}

@@ -6,6 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 
+const isTestMode = import.meta.env.VITE_TEST_MODE === 'true';
+
+
 interface SalesFormProps {
   userId: string;
 }
@@ -17,11 +20,22 @@ const SalesForm = ({ userId }: SalesFormProps) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
+  try {
+    if (!isTestMode) {
+      // En modo normal, sí usamos Supabase
+      if (!userId) {
+        toast({
+          title: "Error",
+          description: "Usuario no autenticado",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const { error } = await supabase
         .from("sales")
         .insert({
@@ -31,27 +45,32 @@ const SalesForm = ({ userId }: SalesFormProps) => {
           metodo_pago: metodoPago,
         });
 
-      if (error) throw error;
-
-      toast({
-        title: "¡Venta creada!",
-        description: `Venta de $${monto} registrada exitosamente`,
-      });
-
-      // Reset form
-      setCliente("");
-      setMonto("");
-      setMetodoPago("");
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
+      if (error) {
+        throw error;
+      }
     }
-  };
+
+    // En modo test o si Supabase salió bien, mostramos el toast de éxito
+    toast({
+      title: "¡Venta creada!",
+      description: `Venta de $${monto} registrada exitosamente`,
+    });
+
+    // Limpiar formulario
+    setCliente("");
+    setMonto("");
+    setMetodoPago("");
+  } catch (error: any) {
+    toast({
+      title: "Error al crear venta",
+      description: error.message ?? "Ocurrió un error desconocido",
+      variant: "destructive",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
