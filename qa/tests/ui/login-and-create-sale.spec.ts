@@ -1,11 +1,13 @@
 import { test, expect } from '@playwright/test';
 
 test('create sale successfully from dashboard', async ({ page }) => {
-  await page.goto('/dashboard?VITE_TEST_MODE=true');
+  await page.goto('/dashboard')
 
 
   // Verifica que el dashboard cargó
-  await expect(page.getByText('Nueva Venta')).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: /nueva venta/i }),
+  ).toBeVisible()
 
   // LLENAR FORM DE VENTA
   await page.getByLabel('Cliente').fill('Cliente Test');
